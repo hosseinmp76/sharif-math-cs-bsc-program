@@ -1,0 +1,105 @@
+\usepackage{import}
+\usepackage{amsthm}
+\usepackage{latexsym}
+\usepackage{tabularx}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{enumitem,amsmath,array}
+\usepackage{tikz}
+\usepackage{tkz-graph}
+\usepackage{bookmark}
+\usetikzlibrary{positioning,chains,fit,shapes,calc}
+\usepackage[a4paper, margin=1.0in]{geometry}
+\usepackage{listings}
+\usepackage{pgf}
+\usepackage{pgfpages}
+\usepackage{hyperref}
+\usepackage{xifthen}% provides \isempty test
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{blindtext}
+\usepackage{mathrsfs}
+
+
+\newcommand{\loopy}[6]{
+    \fbox{\parbox{\textwidth}{
+    		\hypertarget{#1}{
+        نام درس: #1
+    }
+        \\
+        شمارهی درس: #2
+        \\
+        تعداد واحد: #3
+        \\پیشنیاز: #4
+    }}
+    \\
+    \ifthenelse{\isempty{#5}}
+    {}{
+        \fbox{\parbox{\textwidth}{
+            اهداف آموزشی:
+            \begin{enumerate}
+                \foreach \x in #5 {
+                    \item \x
+                }
+            \end{enumerate}
+        }}
+    }
+    \ifthenelse{\isempty{#6}}
+    {}{
+        \fbox{\parbox{\textwidth}{
+            ریز مواد:
+            \begin{enumerate}
+                \foreach \x in #6 {
+                    \item \x
+                }
+            \end{enumerate}
+        }
+        }
+    }
+}
+
+\begingroup
+\catcode`@=11
+\long\gdef\firstofmany#1{%
+	\@fom{\unexpanded{[#1]}}#1{[#1]}}
+
+\long\gdef\@fom#1#2{%
+	\unexpanded{#2}%
+	\@gobbleto{#1}}
+
+\gdef\@gobbleto#1#2{%
+	\ifnum\pdfstrcmp{\unexpanded{#2}}{#1}=\z@
+	\expandafter\@gobbletwo
+	\else
+	\fi
+	\@gobbleto{#1}}
+
+\gdef\@gobbletwo#1#2{}
+
+\endgroup
+
+
+% Example usage
+\newcommand{\Cone}[6]{%
+	% Code for C1 command using the 6 arguments #1, #2, #3, #4, #5, #6
+	% ...
+	% ...
+	% ...
+	\pagebreak
+	\loopy{#1}{#2}{#3}{#4}{#5}{#6}
+	
+}
+
+\newcommand{\callConeList}[1]{
+  	\begin{enumerate}
+		\renewcommand*{\do}[1]{%
+			\item \hyperlink{\firstofmany{##1}}{\firstofmany{##1}}
+		}
+		\docsvlist{#1}% Process the list to create an enumerate environment
+	\end{enumerate}
+    \renewcommand*{\do}[1]{\Cone##1}% Call C1 with 6 arguments from each element of the list
+    \docsvlist{#1}% Process the list
+}
+
+
