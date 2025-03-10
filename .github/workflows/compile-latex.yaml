@@ -1,4 +1,4 @@
-name: Build LaTeX document
+name: Build LaTeX documents
 on: [push]
 jobs:
   build_latex:
@@ -30,35 +30,34 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@3.2.0
-        with:
-          root_file: hosseinmp76-thesis.tex
-          latexmk_use_xelatex: true
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./hosseinmp76-thesis.pdf
-          asset_name: hosseinmp76-thesis.pdf
-          asset_content_type: pdf
-
-      - name: Compile presentation
+      - name: Compile Math LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
-          working_directory: defence-presentation
-          root_file: hosseinmp76-msc-defence-presentation.tex
-#          latexmk_use_xelatex: true
-      - name: Upload presenttion
-        id: upload-release-asset-presentaion
+          root_file: math.tex
+          latexmk_use_xelatex: true
+      - name: Upload Math PDF
+        id: upload-math-pdf
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./defence-presentation/hosseinmp76-msc-defence-presentation.pdf
-          asset_name: hosseinmp76-msc-defence-presentation.pdf
-          asset_content_type: pdf
+          asset_path: ./math.pdf
+          asset_name: math.pdf
+          asset_content_type: application/pdf
+
+      - name: Compile CS LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: cs.tex
+          latexmk_use_xelatex: true
+      - name: Upload CS PDF
+        id: upload-cs-pdf
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./cs.pdf
+          asset_name: cs.pdf
+          asset_content_type: application/pdf
